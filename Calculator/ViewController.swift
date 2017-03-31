@@ -34,5 +34,19 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func performOperation(_ sender: UIButton) {
+        userIsTyping = false
+        if let mathSymbol = sender.currentTitle {
+            switch mathSymbol {
+            case "π":
+                displayValue = Double.pi
+            case "√":
+                displayValue = sqrt(displayValue)
+            default:
+                break
+            }
+        }
+    }
+    
 }
 
