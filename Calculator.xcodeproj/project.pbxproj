@@ -12,6 +12,7 @@
 		EBFDE2281E8EE59A00F3C46C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBFDE2261E8EE59A00F3C46C /* Main.storyboard */; };
 		EBFDE22A1E8EE59A00F3C46C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBFDE2291E8EE59A00F3C46C /* Assets.xcassets */; };
 		EBFDE22D1E8EE59A00F3C46C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBFDE22B1E8EE59A00F3C46C /* LaunchScreen.storyboard */; };
+		EBFDE2361E8EF18300F3C46C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = EBFDE2351E8EF18300F3C46C /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		EBFDE2291E8EE59A00F3C46C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EBFDE22C1E8EE59A00F3C46C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EBFDE22E1E8EE59A00F3C46C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EBFDE2351E8EF18300F3C46C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,23 @@
 		EBFDE2211E8EE59A00F3C46C /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				EBFDE2221E8EE59A00F3C46C /* AppDelegate.swift */,
 				EBFDE2241E8EE59A00F3C46C /* ViewController.swift */,
 				EBFDE2261E8EE59A00F3C46C /* Main.storyboard */,
+				EBFDE2341E8EE7F800F3C46C /* Supporting Files */,
+				EBFDE2351E8EF18300F3C46C /* .gitignore */,
+			);
+			path = Calculator;
+			sourceTree = "<group>";
+		};
+		EBFDE2341E8EE7F800F3C46C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EBFDE2221E8EE59A00F3C46C /* AppDelegate.swift */,
 				EBFDE2291E8EE59A00F3C46C /* Assets.xcassets */,
 				EBFDE22B1E8EE59A00F3C46C /* LaunchScreen.storyboard */,
 				EBFDE22E1E8EE59A00F3C46C /* Info.plist */,
 			);
-			path = Calculator;
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +107,7 @@
 				TargetAttributes = {
 					EBFDE21E1E8EE59A00F3C46C = {
 						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = GLAPQ59262;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -123,6 +135,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBFDE2361E8EF18300F3C46C /* .gitignore in Resources */,
 				EBFDE22D1E8EE59A00F3C46C /* LaunchScreen.storyboard in Resources */,
 				EBFDE22A1E8EE59A00F3C46C /* Assets.xcassets in Resources */,
 				EBFDE2281E8EE59A00F3C46C /* Main.storyboard in Resources */,
@@ -262,6 +275,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GLAPQ59262;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = lejiaduan.Calculator;
@@ -274,6 +288,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GLAPQ59262;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = lejiaduan.Calculator;
