@@ -12,6 +12,16 @@ class CalculatorBrain {
     
     private var accumulator: Double?
     
+    private var description = ""
+    
+    private enum TypeOfOperation {
+        case constantOperation
+        case unaryPrefix
+        case unaryPostfix
+        case binaryOperation
+        case equalsOperation
+    }
+    
     private enum Operation {
         case constant(Double)
         case unary((Double) -> Double)
@@ -19,58 +29,70 @@ class CalculatorBrain {
         case equals
     }
     
-    private var operations: Dictionary<String, Operation> = [
-        "π" : Operation.constant(Double.pi),
-        "e" : Operation.constant(M_E),
-        "√" : Operation.unary(sqrt),
-        "±" : Operation.unary({-$0}),
-        "^2" : Operation.unary({$0 * $0}),
-        "sin" : Operation.unary(sin),
-        "cos" : Operation.unary(cos),
-        "tan" : Operation.unary(tan),
-        "×" : Operation.binary(*),
-        "÷" : Operation.binary(/),
-        "+" : Operation.binary(+),
-        "-" : Operation.binary(-),
-        "=" : Operation.equals
+    private typealias OperationWithType = (operation: Operation, type: TypeOfOperation)
+    
+    private var operations: Dictionary<String, OperationWithType> = [
+        "π" : (Operation.constant(Double.pi), TypeOfOperation.constantOperation),
+        "e" : (Operation.constant(M_E), TypeOfOperation.constantOperation),
+        "√" : (Operation.unary(sqrt), TypeOfOperation.unaryPrefix),
+        "±" : (Operation.unary({-$0}), TypeOfOperation.unaryPrefix),
+        "^2" : (Operation.unary({$0 * $0}), TypeOfOperation.unaryPostfix),
+        "sin" : (Operation.unary(sin), TypeOfOperation.unaryPrefix),
+        "cos" : (Operation.unary(cos), TypeOfOperation.unaryPrefix),
+        "tan" : (Operation.unary(tan), TypeOfOperation.unaryPrefix),
+        "×" : (Operation.binary(*), TypeOfOperation.binaryOperation),
+        "÷" : (Operation.binary(/), TypeOfOperation.binaryOperation),
+        "+" : (Operation.binary(+), TypeOfOperation.binaryOperation),
+        "-" : (Operation.binary(-), TypeOfOperation.binaryOperation),
+        "=" : (Operation.equals, TypeOfOperation.equalsOperation)
     ]
     
-    func performOperation(_ symbol: String) {
-        if let operation = operations[symbol] {
-            switch operation {
+    func performOperation(symbol: String) {
+        if let operationWithType = operations[symbol] {
+            switch operationWithType.operation {
             case .constant(let value):
                 accumulator = value
+                description = String(value)
             case .unary(let function):
                 if accumulator != nil {
+                    if operationWithType.type == .unaryPrefix {
+                        description = "\(symbol)(\(accumulator!))"
+                    } else if operationWithType.type == .unaryPostfix {
+                        description = "(\(accumulator!))\(symbol)"
+                    }
                     accumulator = function(accumulator!)
                 }
             case .binary(let function):
                 if accumulator != nil {
-                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
-                    accumulator = nil
+                    performPendingBinaryOperation()
+                    pendingBinaryOperation = PendingBinaryOperationInfo(function: function, firstOperand: accumulator!, symbol: symbol)
                 }
             case .equals:
                 performPendingBinaryOperation()
             }
         }
+        print(description)
     }
     
     private func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil && accumulator != nil {
-            accumulator = pendingBinaryOperation!.perform(with: accumulator!)
-            pendingBinaryOperation = nil
+            description += "\(pendingBinaryOperation!.symbol) \(accumulator!)"
+            accumulator = pendingBinaryOperation!.function(pendingBinaryOperation!.firstOperand, accumulator!)
+        } else {
+            description = String(accumulator!)
         }
     }
     
-    private var pendingBinaryOperation: PendingBinaryOperation?
+    private var pendingBinaryOperation: PendingBinaryOperationInfo?
     
-    private struct PendingBinaryOperation {
+    private var isPartialResult: Bool {
+        return pendingBinaryOperation != nil
+    }
+    
+    private struct PendingBinaryOperationInfo {
         let function: (Double, Double) -> Double
         let firstOperand: Double
-        
-        func perform(with secondOperand: Double) -> Double {
-            return function(firstOperand, secondOperand)
-        }
+        let symbol: String
     }
     
     func setOperand(_ operand: Double) {
