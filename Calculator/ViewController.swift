@@ -12,6 +12,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     
+    @IBOutlet weak var stepsDisplay: UILabel!
+    
     var userIsTyping = false
 
     @IBAction func touchDigit(_ sender: UIButton) {
@@ -38,6 +40,15 @@ class ViewController: UIViewController {
         }
     }
     
+    var stepsValue: String {
+        get {
+            return stepsDisplay.text!
+        }
+        set {
+            stepsDisplay.text = String(newValue)
+        }
+    }
+    
     private var brain = CalculatorBrain()
     
     @IBAction func performOperation(_ sender: UIButton) {
@@ -47,8 +58,16 @@ class ViewController: UIViewController {
         }
         if let mathSymbol = sender.currentTitle {
             brain.performOperation(symbol: mathSymbol)
+            stepsValue = brain.description
+            if brain.isPartialResult {
+                stepsValue += " \(mathSymbol) ..."
+            }
+            if mathSymbol == "C" {
+                displayValue = 0
+            }
         }
         if let result = brain.result {
+            stepsValue += " ="
             displayValue = result
         }
     }
