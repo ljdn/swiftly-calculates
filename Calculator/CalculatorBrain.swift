@@ -8,10 +8,6 @@
 
 import Foundation
 
-func changeSign(operand: Double) -> Double {
-    return -operand
-}
-
 class CalculatorBrain {
     
     private var accumulator: Double?
@@ -27,7 +23,7 @@ class CalculatorBrain {
         "π" : Operation.constant(Double.pi),
         "e" : Operation.constant(M_E),
         "√" : Operation.unary(sqrt),
-        "±" : Operation.unary(changeSign),
+        "±" : Operation.unary({-$0}),
         "×" : Operation.binary(*),
         "÷" : Operation.binary(/),
         "+" : Operation.binary(+),
