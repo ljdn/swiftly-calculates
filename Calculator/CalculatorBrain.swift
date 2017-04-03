@@ -12,6 +12,8 @@ class CalculatorBrain {
     
     private var accumulator: Double?
     
+    private var lastConstant: String?
+    
     var description = " "
     
     private enum TypeOfOperation {
@@ -55,16 +57,17 @@ class CalculatorBrain {
             switch operationWithType.operation {
             case .constant(let value):
                 accumulator = value
-                description = symbol
+                description += symbol
             case .unary(let function):
                 if accumulator != nil {
                     if operationWithType.type == .unaryPrefix {
-                        description = "\(symbol)(\(accumulator!))"
+                        description += "\(symbol)(\(accumulator!))"
                     } else if operationWithType.type == .unaryPostfix {
-                        description = "(\(accumulator!))\(symbol)"
+                        description += "(\(accumulator!))\(symbol)"
                     }
                     accumulator = function(accumulator!)
                 }
+                lastConstant = nil
             case .binary(let function):
                 if accumulator != nil {
                     performPendingBinaryOperation()
@@ -72,6 +75,7 @@ class CalculatorBrain {
                 }
             case .equals:
                 performPendingBinaryOperation()
+                lastConstant = nil
             case .clear :
                 clearCalculator()
             }
@@ -83,16 +87,22 @@ class CalculatorBrain {
         pendingBinaryOperation = nil
         description = " "
         accumulator = nil
+        lastConstant = nil
     }
     
     private func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil && accumulator != nil {
-            description += " \(pendingBinaryOperation!.symbol) \(accumulator!)"
+            if lastConstant != nil {
+                description += " \(pendingBinaryOperation!.symbol) \(lastConstant!)"
+            } else {
+                description += " \(pendingBinaryOperation!.symbol) \(accumulator!)"
+            }
             accumulator = pendingBinaryOperation!.function(pendingBinaryOperation!.firstOperand, accumulator!)
             pendingBinaryOperation = nil
         } else {
             description = String(accumulator!)
         }
+        lastConstant = nil
     }
     
     private var pendingBinaryOperation: PendingBinaryOperationInfo?
@@ -108,6 +118,9 @@ class CalculatorBrain {
     }
     
     func setOperand(_ operand: Double) {
+        if description == " " {
+            description = String(operand)
+        }
         accumulator = operand
     }
     

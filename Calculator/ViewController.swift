@@ -57,17 +57,19 @@ class ViewController: UIViewController {
             userIsTyping = false
         }
         if let mathSymbol = sender.currentTitle {
-            brain.performOperation(symbol: mathSymbol)
-            stepsValue = brain.description
-            if brain.isPartialResult {
-                stepsValue += " \(mathSymbol) ..."
-            }
             if mathSymbol == "C" {
                 displayValue = 0
             }
+            brain.performOperation(symbol: mathSymbol)
+            if brain.isPartialResult {
+                stepsValue = "\(brain.description) \(mathSymbol) ..."
+            }
+
         }
         if let result = brain.result {
-            stepsValue += " ="
+            if !brain.isPartialResult {
+                stepsValue = "\(brain.description) ="
+            }
             displayValue = result
         }
     }
