@@ -62,7 +62,7 @@ class ViewController: UIViewController {
             }
             brain.performOperation(symbol: mathSymbol)
             if brain.isPartialResult {
-                stepsValue = "\(brain.description) \(mathSymbol) ..."
+                stepsValue = "\(brain.description) ..."
             }
 
         }

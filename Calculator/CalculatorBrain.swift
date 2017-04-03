@@ -56,9 +56,17 @@ class CalculatorBrain {
         if let operationWithType = operations[symbol] {
             switch operationWithType.operation {
             case .constant(let value):
-                accumulator = value
-                description += symbol
+                lastConstant = symbol
+                if pendingBinaryOperation != nil {
+                    performPendingBinaryOperation()
+                } else {
+                    accumulator = value
+                    description += symbol
+                }
             case .unary(let function):
+                if pendingBinaryOperation != nil {
+                    description += pendingBinaryOperation!.symbol
+                }
                 if accumulator != nil {
                     if operationWithType.type == .unaryPrefix {
                         description += "\(symbol)(\(accumulator!))"
@@ -74,7 +82,9 @@ class CalculatorBrain {
                     pendingBinaryOperation = PendingBinaryOperationInfo(function: function, firstOperand: accumulator!, symbol: symbol)
                 }
             case .equals:
-                performPendingBinaryOperation()
+                if pendingBinaryOperation != nil {
+                    performPendingBinaryOperation()
+                }
                 lastConstant = nil
             case .clear :
                 clearCalculator()
@@ -92,6 +102,10 @@ class CalculatorBrain {
     
     private func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil && accumulator != nil {
+            if description == " " {
+                description = String(describing: pendingBinaryOperation!.firstOperand)
+            }
+            
             if lastConstant != nil {
                 description += " \(pendingBinaryOperation!.symbol) \(lastConstant!)"
             } else {
@@ -99,8 +113,13 @@ class CalculatorBrain {
             }
             accumulator = pendingBinaryOperation!.function(pendingBinaryOperation!.firstOperand, accumulator!)
             pendingBinaryOperation = nil
+            
         } else {
-            description = String(accumulator!)
+            if lastConstant != nil {
+                description = lastConstant!
+            } else {
+                description = String(accumulator!)
+            }
         }
         lastConstant = nil
     }
@@ -118,9 +137,6 @@ class CalculatorBrain {
     }
     
     func setOperand(_ operand: Double) {
-        if description == " " {
-            description = String(operand)
-        }
         accumulator = operand
     }
     
