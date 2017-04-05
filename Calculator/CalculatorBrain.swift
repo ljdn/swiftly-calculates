@@ -11,9 +11,8 @@ import Foundation
 class CalculatorBrain {
     
     private var accumulator: Double?
-    
     private var lastConstant: String?
-    
+    private var internalProgram = [AnyObject]()
     var description = " "
     
     private enum TypeOfOperation {
@@ -53,6 +52,7 @@ class CalculatorBrain {
     ]
     
     func performOperation(symbol: String) {
+        internalProgram.append(symbol as AnyObject)
         if let operationWithType = operations[symbol] {
             switch operationWithType.operation {
             case .constant(let value):
@@ -90,7 +90,6 @@ class CalculatorBrain {
                 clearCalculator()
             }
         }
-        print(description)
     }
     
     private func clearCalculator() {
@@ -98,6 +97,7 @@ class CalculatorBrain {
         description = " "
         accumulator = nil
         lastConstant = nil
+        internalProgram.removeAll()
     }
     
     private func performPendingBinaryOperation() {
@@ -137,7 +137,30 @@ class CalculatorBrain {
     }
     
     func setOperand(_ operand: Double) {
+        if pendingBinaryOperation == nil {
+            clearCalculator()
+        }
         accumulator = operand
+        internalProgram.append(operand as AnyObject)
+    }
+    
+    typealias PropertyList = AnyObject
+    var program: PropertyList {
+        get {
+            return internalProgram as CalculatorBrain.PropertyList
+        }
+        set {
+            clearCalculator()
+            if let arrayOfOps = newValue as? [AnyObject] {
+                for op in arrayOfOps {
+                    if let operand = op as? Double {
+                        setOperand(operand)
+                    } else if let operation = op as? String {
+                        performOperation(symbol: operation)
+                    }
+                }
+            }
+        }
     }
     
     var result: Double? {
