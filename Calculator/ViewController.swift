@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         }
     }
     
-    var stepsValue: String {
+    var displaySteps: String {
         get {
             return stepsDisplay.text!
         }
@@ -64,6 +64,16 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func setVar(_ sender: UIButton) {
+        brain.variableValues["M"] = displayValue
+        displayValue = brain.result!
+    }
+    
+    @IBAction func getVar(_ sender: UIButton) {
+        brain.setOperand(variableName: "M")
+        displayValue = brain.result!
+    }
+    
     @IBAction func performOperation(_ sender: UIButton) {
         if userIsTyping {
             brain.setOperand(displayValue)
@@ -72,16 +82,17 @@ class ViewController: UIViewController {
         if let mathSymbol = sender.currentTitle {
             if mathSymbol == "C" {
                 displayValue = 0
+                displaySteps = " "
             }
             brain.performOperation(symbol: mathSymbol)
             if brain.isPartialResult {
-                stepsValue = "\(brain.description) ..."
+                displaySteps = "\(brain.description) ..."
             }
 
         }
         if let result = brain.result {
             if !brain.isPartialResult {
-                stepsValue = "\(brain.description) ="
+                displaySteps = "\(brain.description) ="
             }
             displayValue = result
         }

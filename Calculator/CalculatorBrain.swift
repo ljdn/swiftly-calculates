@@ -11,71 +11,50 @@ import Foundation
 class CalculatorBrain {
     
     private var accumulator: Double?
-    private var lastConstant: String?
     private var internalProgram = [AnyObject]()
-    var description = " "
     
-    private enum TypeOfOperation {
-        case constantOperation
-        case unaryPrefix
-        case unaryPostfix
-        case binaryOperation
-        case equalsOperation
-        case clearOperation
-    }
+    var variableValues = [String: Double]()
     
     private enum Operation {
+        enum TypeOfUnary {
+            case before
+            case after
+        }
+        
         case constant(Double)
-        case unary((Double) -> Double)
+        case unary(function: ((Double) -> Double), format: TypeOfUnary)
         case binary((Double, Double) -> Double)
         case equals
         case clear
     }
     
-    private typealias OperationWithType = (operation: Operation, type: TypeOfOperation)
-    
-    private var operations: Dictionary<String, OperationWithType> = [
-        "π" : (Operation.constant(Double.pi), TypeOfOperation.constantOperation),
-        "e" : (Operation.constant(M_E), TypeOfOperation.constantOperation),
-        "√" : (Operation.unary(sqrt), TypeOfOperation.unaryPrefix),
-        "±" : (Operation.unary({-$0}), TypeOfOperation.unaryPrefix),
-        "^2" : (Operation.unary({$0 * $0}), TypeOfOperation.unaryPostfix),
-        "sin" : (Operation.unary(sin), TypeOfOperation.unaryPrefix),
-        "cos" : (Operation.unary(cos), TypeOfOperation.unaryPrefix),
-        "tan" : (Operation.unary(tan), TypeOfOperation.unaryPrefix),
-        "×" : (Operation.binary(*), TypeOfOperation.binaryOperation),
-        "÷" : (Operation.binary(/), TypeOfOperation.binaryOperation),
-        "+" : (Operation.binary(+), TypeOfOperation.binaryOperation),
-        "-" : (Operation.binary(-), TypeOfOperation.binaryOperation),
-        "=" : (Operation.equals, TypeOfOperation.equalsOperation),
-        "C" : (Operation.clear, TypeOfOperation.clearOperation)
+    private var operations: Dictionary<String, Operation> = [
+        "π" : Operation.constant(Double.pi),
+        "e" : Operation.constant(M_E),
+        "√" : Operation.unary(function: sqrt, format: .before),
+        "±" : Operation.unary(function: ({-$0}), format: .before),
+        "^2" : Operation.unary(function: ({$0 * $0}), format: .after),
+        "sin" : Operation.unary(function: (sin), format: .before),
+        "cos" : Operation.unary(function: (cos), format: .before),
+        "tan" : Operation.unary(function: (tan), format: .before),
+        "×" : Operation.binary(*),
+        "÷" : Operation.binary(/),
+        "+" : Operation.binary(+),
+        "-" : Operation.binary(-),
+        "=" : Operation.equals,
+        "C" : Operation.clear
     ]
     
     func performOperation(symbol: String) {
         internalProgram.append(symbol as AnyObject)
-        if let operationWithType = operations[symbol] {
-            switch operationWithType.operation {
+        if let operation = operations[symbol] {
+            switch operation {
             case .constant(let value):
-                lastConstant = symbol
-                if pendingBinaryOperation != nil {
-                    performPendingBinaryOperation()
-                } else {
-                    accumulator = value
-                    description += symbol
-                }
-            case .unary(let function):
-                if pendingBinaryOperation != nil {
-                    description += pendingBinaryOperation!.symbol
-                }
+                accumulator = value
+            case .unary(let function, _):
                 if accumulator != nil {
-                    if operationWithType.type == .unaryPrefix {
-                        description += "\(symbol)(\(accumulator!))"
-                    } else if operationWithType.type == .unaryPostfix {
-                        description += "(\(accumulator!))\(symbol)"
-                    }
                     accumulator = function(accumulator!)
                 }
-                lastConstant = nil
             case .binary(let function):
                 if accumulator != nil {
                     performPendingBinaryOperation()
@@ -85,7 +64,6 @@ class CalculatorBrain {
                 if pendingBinaryOperation != nil {
                     performPendingBinaryOperation()
                 }
-                lastConstant = nil
             case .clear :
                 clearCalculator()
             }
@@ -94,34 +72,16 @@ class CalculatorBrain {
     
     private func clearCalculator() {
         pendingBinaryOperation = nil
-        description = " "
         accumulator = nil
-        lastConstant = nil
         internalProgram.removeAll()
+        variableValues = [:]
     }
     
     private func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil && accumulator != nil {
-            if description == " " {
-                description = String(describing: pendingBinaryOperation!.firstOperand)
-            }
-            
-            if lastConstant != nil {
-                description += " \(pendingBinaryOperation!.symbol) \(lastConstant!)"
-            } else {
-                description += " \(pendingBinaryOperation!.symbol) \(accumulator!)"
-            }
             accumulator = pendingBinaryOperation!.function(pendingBinaryOperation!.firstOperand, accumulator!)
             pendingBinaryOperation = nil
-            
-        } else {
-            if lastConstant != nil {
-                description = lastConstant!
-            } else {
-                description = String(accumulator!)
-            }
         }
-        lastConstant = nil
     }
     
     private var pendingBinaryOperation: PendingBinaryOperationInfo?
@@ -144,6 +104,12 @@ class CalculatorBrain {
         internalProgram.append(operand as AnyObject)
     }
     
+    func setOperand(variableName: String) {
+        variableValues[variableName] = variableValues[variableName] ?? 0.0
+        accumulator = variableValues[variableName]
+        internalProgram.append(variableName as AnyObject)
+    }
+    
     typealias PropertyList = AnyObject
     var program: PropertyList {
         get {
@@ -161,6 +127,43 @@ class CalculatorBrain {
                 }
             }
         }
+    }
+    
+    var description: String {
+        var opSequence: String = ""
+        for opIndex in internalProgram.indices {
+            if internalProgram[opIndex] is Double {
+                opSequence += String(describing: internalProgram[opIndex])
+            } else if let symbol = internalProgram[opIndex] as? String {
+                if let operation = (operations[symbol]) {
+                    switch operation {
+                    case .constant, .binary:
+                        opSequence += " \(internalProgram[opIndex]) "
+                    case .unary(_, .before):
+                        if internalProgram[opIndex-1] as? String == "=" {
+                            opSequence = symbol + "(" + opSequence + ")"
+                        } else {
+                            let firstPartArray = internalProgram[0..<opIndex-1].map({String(describing: $0)})
+                            let firstPartOfString = firstPartArray.joined(separator: " ")
+                            opSequence = firstPartOfString + symbol + "(\(internalProgram[opIndex-1]))"
+                        }
+                    case .unary(_, .after):
+                        if internalProgram[opIndex-1] as? String == "=" {
+                            opSequence = "(" + opSequence + ")" + symbol
+                        } else {
+                            let firstPartArray = internalProgram[0..<opIndex-1].map({String(describing: $0)})
+                            let firstPartOfString = firstPartArray.joined(separator: " ")
+                            opSequence = firstPartOfString + "(\(internalProgram[opIndex-1]))" + symbol
+                        }
+                    default:
+                        break
+                    }
+                } else {
+                    opSequence += symbol
+                }
+            }
+        }
+        return opSequence
     }
     
     var result: Double? {
