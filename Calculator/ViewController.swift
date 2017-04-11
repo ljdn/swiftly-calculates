@@ -66,7 +66,6 @@ class ViewController: UIViewController {
     
     @IBAction func storeVar(_ sender: UIButton) {
         brain.variableValues["M"] = displayValue
-        print("Stored var")
         userIsTyping = false
         brain.program = brain.program
         displayValue = brain.result!

@@ -76,6 +76,17 @@ class CalculatorBrain {
         }
     }
     
+    private func internalToString(_ op: TypeOfOp) -> String {
+        switch op {
+        case .operand(let value):
+            return String(value)
+        case .operation(let symbol):
+            return symbol
+        case .variable(let variableName):
+            return variableName
+        }
+    }
+    
     private func clearCalculator() {
         clearKeepVar()
         variableValues = [:]
@@ -116,7 +127,6 @@ class CalculatorBrain {
     
     func setOperand(variableName: String) {
         accumulator = variableValues[variableName] ?? 0
-        print("setting \(variableName) to \(variableValues[variableName] ?? 0.0)")
         internalProgram.append(TypeOfOp.variable(variableName))
     }
     
@@ -130,7 +140,6 @@ class CalculatorBrain {
             pendingBinaryOperation = nil
             accumulator = nil
             internalProgram.removeAll()
-            print(variableValues)
             if let arrayOfOps = newValue as? [TypeOfOp] {
                 for op in arrayOfOps {
                     switch op {
@@ -164,17 +173,17 @@ class CalculatorBrain {
                         if case .operation("=") = internalProgram[opIndex-1] {
                             opSequence = symbol + "(" + opSequence + ")"
                         } else {
-                            let firstPartArray = internalProgram[0..<opIndex-1].map({String(describing: $0)})
+                            let firstPartArray = internalProgram[0..<opIndex-1].map({internalToString($0)})
                             let firstPartOfString = firstPartArray.joined(separator: " ")
-                            opSequence = firstPartOfString + symbol + " (String(describing: (\(internalProgram[opIndex-1]))))"
+                            opSequence = firstPartOfString + symbol + " (\(internalToString(internalProgram[opIndex-1])))"
                         }
                     case .unary(_, .after):
                         if case .operation("=") = internalProgram[opIndex-1] {
                             opSequence = "(" + opSequence + ")" + symbol
                         } else {
-                            let firstPartArray = internalProgram[0..<opIndex-1].map({String(describing: $0)})
+                            let firstPartArray = internalProgram[0..<opIndex-1].map({internalToString($0)})
                             let firstPartOfString = firstPartArray.joined(separator: " ")
-                            opSequence = firstPartOfString + " (String(describing: (\(internalProgram[opIndex-1])))) " + symbol + " "
+                            opSequence = firstPartOfString + " (\(internalToString(internalProgram[opIndex-1]))) " + symbol + " "
                         }
                     default:
                         break
