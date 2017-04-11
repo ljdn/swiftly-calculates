@@ -11,9 +11,15 @@ import Foundation
 class CalculatorBrain {
     
     private var accumulator: Double?
-    private var internalProgram = [AnyObject]()
+    private var internalProgram = [TypeOfOp]()
     
     var variableValues = [String: Double]()
+    
+    private enum TypeOfOp {
+        case operand(Double)
+        case operation(String)
+        case variable(String)
+    }
     
     private enum Operation {
         enum TypeOfUnary {
@@ -46,7 +52,7 @@ class CalculatorBrain {
     ]
     
     func performOperation(symbol: String) {
-        internalProgram.append(symbol as AnyObject)
+        internalProgram.append(TypeOfOp.operation(symbol))
         if let operation = operations[symbol] {
             switch operation {
             case .constant(let value):
@@ -71,10 +77,14 @@ class CalculatorBrain {
     }
     
     private func clearCalculator() {
+        clearKeepVar()
+        variableValues = [:]
+    }
+    
+    private func clearKeepVar() {
         pendingBinaryOperation = nil
         accumulator = nil
         internalProgram.removeAll()
-        variableValues = [:]
     }
     
     private func performPendingBinaryOperation() {
@@ -98,31 +108,38 @@ class CalculatorBrain {
     
     func setOperand(_ operand: Double) {
         if pendingBinaryOperation == nil {
-            clearCalculator()
+            clearKeepVar()
         }
         accumulator = operand
-        internalProgram.append(operand as AnyObject)
+        internalProgram.append(TypeOfOp.operand(operand))
     }
     
     func setOperand(variableName: String) {
-        variableValues[variableName] = variableValues[variableName] ?? 0.0
-        accumulator = variableValues[variableName]
-        internalProgram.append(variableName as AnyObject)
+        accumulator = variableValues[variableName] ?? 0
+        print("setting \(variableName) to \(variableValues[variableName] ?? 0.0)")
+        internalProgram.append(TypeOfOp.variable(variableName))
     }
     
     typealias PropertyList = AnyObject
+    
     var program: PropertyList {
         get {
             return internalProgram as CalculatorBrain.PropertyList
         }
         set {
-            clearCalculator()
-            if let arrayOfOps = newValue as? [AnyObject] {
+            pendingBinaryOperation = nil
+            accumulator = nil
+            internalProgram.removeAll()
+            print(variableValues)
+            if let arrayOfOps = newValue as? [TypeOfOp] {
                 for op in arrayOfOps {
-                    if let operand = op as? Double {
+                    switch op {
+                    case .operand(let operand):
                         setOperand(operand)
-                    } else if let operation = op as? String {
-                        performOperation(symbol: operation)
+                    case .operation(let symbol):
+                        performOperation(symbol: symbol)
+                    case .variable(let variableName):
+                        setOperand(variableName: variableName)
                     }
                 }
             }
@@ -132,34 +149,36 @@ class CalculatorBrain {
     var description: String {
         var opSequence: String = ""
         for opIndex in internalProgram.indices {
-            if internalProgram[opIndex] is Double {
-                opSequence += String(describing: internalProgram[opIndex])
-            } else if let symbol = internalProgram[opIndex] as? String {
+            switch internalProgram[opIndex] {
+            
+            case .operand(let operand):
+                opSequence += String(describing: operand)
+            case .variable(let variableName):
+                opSequence += variableName
+            case .operation(let symbol):
                 if let operation = (operations[symbol]) {
                     switch operation {
                     case .constant, .binary:
-                        opSequence += " \(internalProgram[opIndex]) "
+                        opSequence += " \(symbol) "
                     case .unary(_, .before):
-                        if internalProgram[opIndex-1] as? String == "=" {
+                        if case .operation("=") = internalProgram[opIndex-1] {
                             opSequence = symbol + "(" + opSequence + ")"
                         } else {
                             let firstPartArray = internalProgram[0..<opIndex-1].map({String(describing: $0)})
                             let firstPartOfString = firstPartArray.joined(separator: " ")
-                            opSequence = firstPartOfString + symbol + "(\(internalProgram[opIndex-1]))"
+                            opSequence = firstPartOfString + symbol + " (String(describing: (\(internalProgram[opIndex-1]))))"
                         }
                     case .unary(_, .after):
-                        if internalProgram[opIndex-1] as? String == "=" {
+                        if case .operation("=") = internalProgram[opIndex-1] {
                             opSequence = "(" + opSequence + ")" + symbol
                         } else {
                             let firstPartArray = internalProgram[0..<opIndex-1].map({String(describing: $0)})
                             let firstPartOfString = firstPartArray.joined(separator: " ")
-                            opSequence = firstPartOfString + "(\(internalProgram[opIndex-1]))" + symbol
+                            opSequence = firstPartOfString + " (String(describing: (\(internalProgram[opIndex-1])))) " + symbol + " "
                         }
                     default:
                         break
                     }
-                } else {
-                    opSequence += symbol
                 }
             }
         }
@@ -167,7 +186,7 @@ class CalculatorBrain {
     }
     
     var result: Double? {
-        return accumulator;
+            return accumulator;
     }
     
 }

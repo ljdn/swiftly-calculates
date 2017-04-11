@@ -80,7 +80,7 @@
                                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="setVar:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gjw-y5-uev"/>
+                                                            <action selector="storeVar:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4dM-dc-7nQ"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awN-pt-E9j">

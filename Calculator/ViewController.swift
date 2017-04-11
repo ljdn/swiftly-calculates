@@ -64,13 +64,17 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func setVar(_ sender: UIButton) {
+    @IBAction func storeVar(_ sender: UIButton) {
         brain.variableValues["M"] = displayValue
+        print("Stored var")
+        userIsTyping = false
+        brain.program = brain.program
         displayValue = brain.result!
     }
     
     @IBAction func getVar(_ sender: UIButton) {
         brain.setOperand(variableName: "M")
+        userIsTyping = false
         displayValue = brain.result!
     }
     
