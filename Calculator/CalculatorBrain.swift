@@ -163,7 +163,7 @@ class CalculatorBrain {
     }
     
     var description: String {
-        var opSequence: String = ""
+        var opSequence: String = " "
         for opIndex in internalProgram.indices {
             switch internalProgram[opIndex] {
             
@@ -198,7 +198,7 @@ class CalculatorBrain {
                 }
             }
         }
-        return opSequence
+        return opSequence 
     }
     
     var result: Double? {

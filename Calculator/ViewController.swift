@@ -75,7 +75,7 @@ class ViewController: UIViewController {
             }
         } else {
             brain.undo()
-            displaySteps = brain.description
+            displaySteps = brain.description 
             displayValue = brain.result ?? 0.0
         }
     }
