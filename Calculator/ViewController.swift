@@ -53,17 +53,6 @@ class ViewController: UIViewController {
     
     var savedProgram: CalculatorBrain.PropertyList?
     
-    @IBAction func save() {
-        savedProgram = brain.program
-    }
-    
-    @IBAction func restore() {
-        if savedProgram != nil {
-            brain.program = savedProgram!
-            displayValue = brain.result!
-        }
-    }
-    
     @IBAction func storeVar(_ sender: UIButton) {
         brain.variableValues["M"] = displayValue
         userIsTyping = false
@@ -77,7 +66,22 @@ class ViewController: UIViewController {
         displayValue = brain.result!
     }
     
+    @IBAction func undo(_ sender: UIButton) {
+        if userIsTyping && display.text! != "0.0" {
+            display.text! = display.text!.substring(to: display.text!.index(before: display.text!.endIndex))
+            if display.text!.isEmpty {
+                displayValue = 0.0
+                userIsTyping = false
+            }
+        } else {
+            brain.undo()
+            displaySteps = brain.description
+            displayValue = brain.result ?? 0.0
+        }
+    }
+    
     @IBAction func performOperation(_ sender: UIButton) {
+        
         if userIsTyping {
             brain.setOperand(displayValue)
             userIsTyping = false

@@ -48,7 +48,7 @@ class CalculatorBrain {
         "+" : Operation.binary(+),
         "-" : Operation.binary(-),
         "=" : Operation.equals,
-        "C" : Operation.clear
+        "C" : Operation.clear,
     ]
     
     func performOperation(symbol: String) {
@@ -70,10 +70,17 @@ class CalculatorBrain {
                 if pendingBinaryOperation != nil {
                     performPendingBinaryOperation()
                 }
-            case .clear :
+            case .clear:
                 clearCalculator()
             }
         }
+    }
+    
+    func undo() {
+        if !internalProgram.isEmpty {
+            internalProgram.removeLast()
+        }
+        program = internalProgram as CalculatorBrain.PropertyList
     }
     
     private func internalToString(_ op: TypeOfOp) -> String {
