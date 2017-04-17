@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zne-c9-i1h">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -51,8 +51,8 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mlA-WX-rS8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="78.5" height="84"/>
-                                                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="60.5" height="84"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                                         <state key="normal" title="→M">
                                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -62,8 +62,8 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awN-pt-E9j">
-                                                        <rect key="frame" x="88.5" y="0.0" width="78" height="84"/>
-                                                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <rect key="frame" x="70.5" y="0.0" width="60.5" height="84"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                                         <state key="normal" title="M">
                                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -73,9 +73,9 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OR1-ae-dKn">
-                                                        <rect key="frame" x="176.5" y="0.0" width="78.5" height="84"/>
+                                                        <rect key="frame" x="141" y="0.0" width="61" height="84"/>
                                                         <color key="backgroundColor" red="1" green="0.84684514999389648" blue="0.51987242698669434" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                         <state key="normal" title="UNDO">
                                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
@@ -84,7 +84,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IqR-Qu-H1L">
-                                                        <rect key="frame" x="265" y="0.0" width="78" height="84"/>
+                                                        <rect key="frame" x="212" y="0.0" width="60.5" height="84"/>
                                                         <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="0.90844392119999995" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                                         <state key="normal" title="C">
@@ -92,6 +92,17 @@
                                                         </state>
                                                         <connections>
                                                             <action selector="performOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pua-Po-v7S"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dy8-EA-NW7">
+                                                        <rect key="frame" x="282.5" y="0.0" width="60.5" height="84"/>
+                                                        <color key="backgroundColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <state key="normal" title="GRAPH">
+                                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <segue destination="kUP-cB-OcW" kind="showDetail" identifier="graph" id="z3V-0E-dOM"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -405,7 +416,53 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-742" y="-99"/>
+            <point key="canvasLocation" x="-1126" y="-312"/>
+        </scene>
+        <!--Graph View Controller-->
+        <scene sceneID="nGH-TO-mSi">
+            <objects>
+                <viewController id="kUP-cB-OcW" customClass="GraphViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ams-Ci-c7F"/>
+                        <viewControllerLayoutGuide type="bottom" id="izk-bP-N8t"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hg4-kB-paL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m6q-uB-ocM">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="m6q-uB-ocM" secondAttribute="trailing" id="2H9-8W-jSG"/>
+                            <constraint firstItem="m6q-uB-ocM" firstAttribute="bottom" secondItem="izk-bP-N8t" secondAttribute="top" id="7bg-6d-PMp"/>
+                            <constraint firstItem="m6q-uB-ocM" firstAttribute="leading" secondItem="hg4-kB-paL" secondAttribute="leading" id="Ztn-gb-Aml"/>
+                            <constraint firstItem="m6q-uB-ocM" firstAttribute="top" secondItem="ams-Ci-c7F" secondAttribute="bottom" id="cJB-Dq-EmA"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IsZ-JE-DxI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1127" y="451"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="M6B-mt-icx">
+            <objects>
+                <splitViewController id="Zne-c9-i1h" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="masterViewController" id="waA-HG-b5R"/>
+                        <segue destination="kUP-cB-OcW" kind="relationship" relationship="detailViewController" id="CfO-wj-2Wa"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B8w-qq-9x2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2047" y="-106"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="z3V-0E-dOM"/>
+    </inferredMetricsTieBreakers>
 </document>
