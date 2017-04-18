@@ -10,5 +10,12 @@ import UIKit
 
 class GraphViewController: UIViewController {
     
-    @IBOutlet weak var graphView: GraphView!
+    var function: ((Double) -> Double)?
+    
+    @IBOutlet weak var graphView: GraphView! {
+        didSet {
+            graphView.function = function
+        }
+    }
+    
 }

@@ -137,7 +137,7 @@ class CalculatorBrain {
         internalProgram.append(TypeOfOp.variable(variableName))
     }
     
-    typealias PropertyList = AnyObject
+    typealias PropertyList = [AnyObject]
     
     var program: PropertyList {
         get {
