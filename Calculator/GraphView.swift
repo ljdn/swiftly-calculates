@@ -20,8 +20,10 @@ class GraphView: UIView {
         didSet { setNeedsDisplay() }
     }
     
+    var noOriginSet = true
+    
     @IBInspectable
-    var scale: CGFloat = 1 {
+    var scale: CGFloat = 50 {
         didSet { setNeedsDisplay() }
     }
     
@@ -32,7 +34,10 @@ class GraphView: UIView {
 
     override func draw(_ rect: CGRect) {
         
-        origin = CGPoint(x: bounds.midX, y: bounds.midY)
+        if noOriginSet {
+            origin = CGPoint(x: bounds.midX, y: bounds.midY)
+            noOriginSet = false
+        }
         
         let axesDrawer = AxesDrawer()
         axesDrawer.drawAxes(in: rect, origin: origin, pointsPerUnit: scale)
@@ -61,6 +66,33 @@ class GraphView: UIView {
             }
         }
         path.stroke()
+    }
+    
+    func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+        switch pinchRecognizer.state {
+        case .ended, .changed:
+            scale *= pinchRecognizer.scale
+            pinchRecognizer.scale = 1
+        default:
+            break
+        }
+    }
+    
+    func changeView(byReactingTo panRecognizer: UIPanGestureRecognizer) {
+        switch panRecognizer.state {
+        case .ended, .changed:
+            let distance = panRecognizer.translation(in: self)
+            origin = CGPoint(x: origin.x + distance.x, y: origin.y + distance.y)
+            panRecognizer.setTranslation(CGPoint.zero, in: self)
+        default:
+            break
+        }
+    }
+    
+    func changeOrigin(byReactingTo tapRecognizer: UITapGestureRecognizer) {
+        if tapRecognizer.state == .ended {
+            origin = tapRecognizer.location(in: self)
+        }
     }
 
 }

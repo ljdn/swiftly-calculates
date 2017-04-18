@@ -121,7 +121,7 @@ class CalculatorViewController: UIViewController {
                 (x: Double) -> Double in
                 self.brain.variableValues["M"] = x
                 self.brain.program = self.brain.program
-                return self.brain.result!
+                return self.brain.result ?? 0
             }
         }
     }
