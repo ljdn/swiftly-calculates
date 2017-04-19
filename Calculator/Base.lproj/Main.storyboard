@@ -412,6 +412,7 @@
                     <navigationItem key="navigationItem" title="Calculator" id="ubm-W8-SNO"/>
                     <connections>
                         <outlet property="display" destination="IiN-eE-7KQ" id="1kd-dJ-NyR"/>
+                        <outlet property="graphButton" destination="Dy8-EA-NW7" id="hL5-rS-CX1"/>
                         <outlet property="stepsDisplay" destination="xPa-oB-Q2s" id="0GZ-XU-Ayi"/>
                     </connections>
                 </viewController>

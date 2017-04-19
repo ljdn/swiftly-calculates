@@ -9,6 +9,10 @@
 import UIKit
 
 class CalculatorViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        disableGraph()
+    }
 
     @IBOutlet weak var display: UILabel!
     
@@ -28,6 +32,19 @@ class CalculatorViewController: UIViewController {
         } else {
             display.text = digit
             userIsTyping = true
+        }
+        disableGraph()
+    }
+
+    @IBOutlet weak var graphButton: UIButton!
+    func disableGraph() {
+        if brain.isPartialResult || brain.description == " " {
+            graphButton.isEnabled = false
+            graphButton.setTitle("🚫", for: .normal)
+        } else {
+            graphButton.isEnabled = true
+            graphButton.setTitle("📈", for: .normal
+            )
         }
     }
 
@@ -58,12 +75,14 @@ class CalculatorViewController: UIViewController {
         userIsTyping = false
         brain.program = brain.program
         displayValue = brain.result!
+        disableGraph()
     }
     
     @IBAction func getVar(_ sender: UIButton) {
         brain.setOperand(variableName: "M")
         userIsTyping = false
         displayValue = brain.result!
+        disableGraph()
     }
     
     @IBAction func undo(_ sender: UIButton) {
@@ -78,6 +97,7 @@ class CalculatorViewController: UIViewController {
             displaySteps = brain.description 
             displayValue = brain.result ?? 0.0
         }
+        disableGraph()
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
@@ -103,6 +123,7 @@ class CalculatorViewController: UIViewController {
             }
             displayValue = result
         }
+        disableGraph()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
