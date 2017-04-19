@@ -102,7 +102,7 @@
                                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
-                                                            <segue destination="pbC-Kc-ntv" kind="showDetail" identifier="graph" id="z3V-0E-dOM"/>
+                                                            <segue destination="pbC-Kc-ntv" kind="showDetail" identifier="graphFunction" id="z3V-0E-dOM"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -409,7 +409,13 @@
                             <constraint firstAttribute="trailingMargin" secondItem="YV4-86-Tu1" secondAttribute="trailing" id="zqW-pn-eaA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Calculator" id="ubm-W8-SNO"/>
+                    <navigationItem key="navigationItem" title="Calculator" id="ubm-W8-SNO">
+                        <barButtonItem key="rightBarButtonItem" title="Graph ☛" id="Lga-fW-oWx">
+                            <connections>
+                                <segue destination="pbC-Kc-ntv" kind="showDetail" identifier="showGraph" id="BXo-ny-hwm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="display" destination="IiN-eE-7KQ" id="1kd-dJ-NyR"/>
                         <outlet property="graphButton" destination="Dy8-EA-NW7" id="hL5-rS-CX1"/>
@@ -457,7 +463,7 @@
         <!--Split View Controller-->
         <scene sceneID="M6B-mt-icx">
             <objects>
-                <splitViewController id="Zne-c9-i1h" sceneMemberID="viewController">
+                <splitViewController id="Zne-c9-i1h" customClass="SplitViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="k4W-Tk-E73" kind="relationship" relationship="masterViewController" id="waA-HG-b5R"/>
                         <segue destination="pbC-Kc-ntv" kind="relationship" relationship="detailViewController" id="CfO-wj-2Wa"/>

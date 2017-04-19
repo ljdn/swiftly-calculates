@@ -23,7 +23,7 @@ class GraphView: UIView {
     var noOriginSet = true
     
     @IBInspectable
-    var scale: CGFloat = 50 {
+    var scale: CGFloat = 10 {
         didSet { setNeedsDisplay() }
     }
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB5EEB421EA7F02C006FD329 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5EEB411EA7F02C006FD329 /* SplitViewController.swift */; };
 		EB600C151EA54C8900995C09 /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB600C141EA54C8900995C09 /* AxesDrawer.swift */; };
 		EB600C171EA54CEE00995C09 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB600C161EA54CEE00995C09 /* GraphViewController.swift */; };
 		EB600C191EA556EC00995C09 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB600C181EA556EC00995C09 /* GraphView.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EB5EEB411EA7F02C006FD329 /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		EB600C141EA54C8900995C09 /* AxesDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AxesDrawer.swift; path = ../../AxesDrawer.swift; sourceTree = "<group>"; };
 		EB600C161EA54CEE00995C09 /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		EB600C181EA556EC00995C09 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				EB600C181EA556EC00995C09 /* GraphView.swift */,
 				EBFDE2341E8EE7F800F3C46C /* Supporting Files */,
 				EBFDE2351E8EF18300F3C46C /* .gitignore */,
+				EB5EEB411EA7F02C006FD329 /* SplitViewController.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBFDE2381E8EFA1000F3C46C /* CalculatorBrain.swift in Sources */,
+				EB5EEB421EA7F02C006FD329 /* SplitViewController.swift in Sources */,
 				EB600C171EA54CEE00995C09 /* GraphViewController.swift in Sources */,
 				EB600C151EA54C8900995C09 /* AxesDrawer.swift in Sources */,
 				EB600C191EA556EC00995C09 /* GraphView.swift in Sources */,

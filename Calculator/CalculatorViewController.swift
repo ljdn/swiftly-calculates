@@ -126,6 +126,7 @@ class CalculatorViewController: UIViewController {
         disableGraph()
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var destinationController = segue.destination
         if let navigationController = destinationController as? UINavigationController {
@@ -133,16 +134,19 @@ class CalculatorViewController: UIViewController {
         }
         
         if let graphViewController = destinationController as? GraphViewController {
-            if brain.isPartialResult {
-                return
-            }
-            graphViewController.navigationItem.title = brain.description
-            
-            graphViewController.function = {
-                (x: Double) -> Double in
-                self.brain.variableValues["M"] = x
-                self.brain.program = self.brain.program
-                return self.brain.result ?? 0
+            if segue.identifier == "graphFunction" {
+                if brain.isPartialResult {
+                    return
+                }
+                graphViewController.navigationItem.title = brain.description
+                
+                graphViewController.function = {
+                    (x: Double) -> Double in
+                    self.brain.variableValues["M"] = x
+                    self.brain.program = self.brain.program
+                    return self.brain.result ?? 0
+                }
+
             }
         }
     }
