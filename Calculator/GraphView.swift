@@ -51,10 +51,15 @@ class GraphView: UIView {
             for x in 0...Int(bounds.size.width * scale) {
                 let pointX = CGFloat(x) / scale
                 
-                let xVal = Double(pointX - origin.x)
+                let xVal = Double((pointX - origin.x) / scale)
                 let yVal = function!(xVal)
                 
-                let pointY = (origin.y - CGFloat(yVal)) / scale
+                if !yVal.isZero && !yVal.isNormal {
+                    firstPoint = true
+                    continue
+                }
+                
+                let pointY = origin.y - CGFloat(yVal) * scale
                 
                 if firstPoint {
                     path.move(to: CGPoint(x: pointX, y: pointY))
