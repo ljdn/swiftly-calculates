@@ -9,30 +9,30 @@
 import UIKit
 
 @IBDesignable
-class GraphView: UIView {
+public class GraphView: UIView {
     
     var function: ((Double) -> Double)? {
         didSet { setNeedsDisplay() }
     }
     
     @IBInspectable
-    var origin = CGPoint(x: 0, y: 0) {
+    public var origin = CGPoint(x: 0, y: 0) {
         didSet { setNeedsDisplay() }
     }
     
     var noOriginSet = true
     
     @IBInspectable
-    var scale: CGFloat = 10 {
+    public var scale: CGFloat = 10 {
         didSet { setNeedsDisplay() }
     }
     
     @IBInspectable
-    var color = UIColor.black {
+    public var color = UIColor.black {
         didSet { setNeedsDisplay() }
     }
 
-    override func draw(_ rect: CGRect) {
+    override public func draw(_ rect: CGRect) {
         
         if noOriginSet {
             origin = CGPoint(x: bounds.midX, y: bounds.midY)
